@@ -10,9 +10,14 @@ apt -y install nvidia-cuda-toolkit libgl1-mesa-glx
 git clone --branch=release https://github.com/bghira/SimpleTuner.git
 
 cd SimpleTuner
+
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U poetry pip
+pip install huggingface_hub
+
+# Log Into Huggingface
+huggingface-cli login --token $HFTK --add-to-git-credential
 
 # Install Dependencie
 poetry install --no-root
@@ -172,7 +177,42 @@ export TRAINING_DYNAMO_BACKEND='no'                # or 'no' if you want to disa
 export TOKENIZERS_PARALLELISM=false
 EOF
 
+cat > config/multidatabackend.json <<EOF
+[
+  {
+    "id": "blackswan-flux",
+    "type": "local",
+    "crop": false,
+    "crop_aspect": "preserve",
+    "crop_style": "random",
+    "resolution": 512,
+    "minimum_image_size": 512,
+    "maximum_image_size": 512,
+    "target_downsample_size": 512,
+    "resolution_type": "pixel",
+    "cache_dir_vae": "cache/vae/flux/blackswan",
+    "instance_data_dir": "/workspace/SimpleTuner/output/blackswan/dataset/",
+    "disabled": false,
+    "skip_file_discovery": "",
+    "caption_strategy": "textfile",
+    "metadata_backend": "json"
+  },
+  {
+    "id": "text-embeds",
+    "type": "local",
+    "dataset_type": "text_embeds",
+    "default": true,
+    "cache_dir": "cache/text/flux/blackswan",
+    "disabled": false,
+    "write_batch_size": 128
+  }
+]
+EOF
+
 cd /workspace
+
+
+
 apt -y install git-lfs
 
 ##Download orig_backup
