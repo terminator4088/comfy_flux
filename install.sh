@@ -13,8 +13,8 @@ git clone --branch=release https://github.com/bghira/SimpleTuner.git
 
 cd SimpleTuner
 
-python3 -m venv .venv
-source .venv/bin/activate
+#python3 -m venv .venv
+#source .venv/bin/activate
 pip install -U poetry pip
 
 # Install Dependencie
