@@ -18,6 +18,7 @@ apt -y install git-lfs
 
 (mkdir -p /workspace/SimpleTuner/datasets
 cd /workspace/SimpleTuner/datasets
+mkdir $SUBJECT
 git clone https://huggingface.co/datasets/ptx0/pseudo-camera-10k  pseudo-camera-10k) &>/workspace/download.log &
 
 python3 -m venv .venv
