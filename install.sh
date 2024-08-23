@@ -6,7 +6,7 @@ cd /workspace
 
 apt update
 apt -y install vim
-apt -y install nvidia-cuda-toolkit libgl1-mesa-glx
+#apt -y install nvidia-cuda-toolkit libgl1-mesa-glx
 
 # Install SimpleTuner
 git clone --branch=release https://github.com/bghira/SimpleTuner.git
@@ -42,8 +42,8 @@ poetry install --no-root
 pip uninstall -y deepspeed bitsandbytes
 
 # Download working Diffusers
-pip uninstall diffusers
-pip install git+https://github.com/huggingface/diffusers
+#pip uninstall diffusers
+#pip install git+https://github.com/huggingface/diffusers
 
 # Less VRAM Usage
 pip install optimum-quanto
