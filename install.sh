@@ -13,8 +13,15 @@ git clone --branch=release https://github.com/bghira/SimpleTuner.git
 
 cd SimpleTuner
 
-#python3 -m venv .venv
-#source .venv/bin/activate
+# Regularization Images
+apt -y install git-lfs
+
+(mkdir -p /workspace/SimpleTuner/datasets
+cd /workspace/SimpleTuner/datasets
+git clone https://huggingface.co/datasets/ptx0/pseudo-camera-10k  pseudo-camera-10k) &>/workspace/download.log &
+
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -U poetry pip
 
 # Install Dependencie
@@ -25,6 +32,9 @@ pip install wandb
 git config --global credential.helper store
 huggingface-cli login --token $HFTK --add-to-git-credential
 
+# Log Into Wandb
+WANDB_API_KEY="$WANDB_API_KEY" wandb login
+
 # Install Dependencie
 poetry install --no-root
 
@@ -34,6 +44,9 @@ pip uninstall -y deepspeed bitsandbytes
 # Download working Diffusers
 pip uninstall diffusers
 pip install git+https://github.com/huggingface/diffusers
+
+# Less VRAM Usage
+pip install optimum-quanto
 
 #
 cat >config/config.env <<EOF
@@ -261,11 +274,6 @@ EOF
 
 mkdir -p cache/vae/$SUBJECT
 mkdir -p cache/text/$SUBJECT
-
-# Regularization Images
-apt -y install git-lfs
-mkdir -p datasets
-#git clone https://huggingface.co/datasets/ptx0/pseudo-camera-10k  datasets/pseudo-camera-10k
 
 cd /workspace/SimpleTuner
 
