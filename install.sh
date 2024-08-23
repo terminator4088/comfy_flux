@@ -2,6 +2,8 @@
 
 #####	Start Docker Cmd: /bin/bash -c 'if [ ! -f /setup.sh ]; then wget "https://raw.githubusercontent.com/terminator4088/runpod/main/install.sh" -O /setup.sh && chmod +x /setup.sh && /setup.sh; fi'
 
+cd /workspace
+
 apt update
 apt -y install vim
 apt -y install nvidia-cuda-toolkit libgl1-mesa-glx
@@ -20,6 +22,7 @@ pip install huggingface_hub
 pip install wandb
 
 # Log Into Huggingface
+git config --global credential.helper store
 huggingface-cli login --token $HFTK --add-to-git-credential
 
 # Install Dependencie
@@ -256,10 +259,12 @@ cat > config/user_prompt_library.json <<EOF
 }
 EOF
 
+mkdir -p cache/vae/$SUBJECT
+mkdir -p cache/text/$SUBJECT
 
 # Regularization Images
 apt -y install git-lfs
 mkdir -p datasets
-git clone https://huggingface.co/datasets/ptx0/pseudo-camera-10k  datasets/pseudo-camera-10k
+#git clone https://huggingface.co/datasets/ptx0/pseudo-camera-10k  datasets/pseudo-camera-10k
 
 cd /workspace/SimpleTuner
