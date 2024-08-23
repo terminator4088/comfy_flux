@@ -268,3 +268,9 @@ mkdir -p datasets
 #git clone https://huggingface.co/datasets/ptx0/pseudo-camera-10k  datasets/pseudo-camera-10k
 
 cd /workspace/SimpleTuner
+
+cat <<EOF
+---
+DONE
+---
+EOF
