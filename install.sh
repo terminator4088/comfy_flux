@@ -16,7 +16,6 @@ cd SimpleTuner
 # Regularization Images
 apt -y install git-lfs
 
-mkdir /workspace/SimpleTuner/datasets
 mkdir /workspace/SimpleTuner/datasets/$SUBJECT
 (cd /workspace/SimpleTuner/datasets
 git clone https://huggingface.co/datasets/ptx0/pseudo-camera-10k  pseudo-camera-10k) &>/workspace/download.log &
