@@ -25,8 +25,9 @@ mv text_encoder/model.safetensors text_encoder/clip_l.safetensors
 mv vae/diffusion_pytorch_model.safetensors vae/flux_vae.safetensors
 touch /workspace/downloads/hf_download_1.fin) &> hf_download_1.log &
 
-(huggingface-cli download black-forest-labs/FLUX.1-dev flux1-dev.safetensors --local-dir /workspace/downloads/unet
+(huggingface-cli download black-forest-labs/FLUX.1-dev flux1-dev.safetensors ae.safetensors --local-dir /workspace/downloads/unet
 mv flux1-dev.safetensors unet/flux1-dev.safetensor
+mv ae.safetensors vae/ae.safetensor
 touch /workspace/downloads/hf_download_2.fin) &> hf_download_2.log &
 
 (huggingface-cli download XLabs-AI/flux-RealismLora lora.safetensors --local-dir /workspace/downloads
@@ -62,7 +63,7 @@ ignore
 git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git
 cd stable-diffusion-webui-forge/models
 
-rm -rf text_encoder VAE Stable-diffusion controlnet lora
+rm -rf text_encoder VAE Stable-diffusion controlnet loras
 
 ln -s /workspace/downloads/text_encoder text_encoder
 ln -s /workspace/downloads/vae VAE
@@ -73,4 +74,4 @@ ln -s /workspace/downloads/lora lora
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements_versions.txt
-python3 webui.py --listen
+./webui.sh -f --listen
