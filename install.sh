@@ -60,6 +60,7 @@ pip install -r requirements.txt
 python3 main.py
 ignore
 
+git config --global http.version HTTP/1.1
 git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git
 
 
