@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#####	Start Docker Cmd: /bin/bash -c 'if [ ! -f /setup.sh ]; then wget "https://raw.githubusercontent.com/terminator4088/runpod/main/install.sh" -O /setup.sh && chmod +x /setup.sh && /setup.sh; fi'
+#####	Start Docker Cmd: /bin/bash -c 'if [ ! -f /setup.sh ]; then wget "https://raw.githubusercontent.com/terminator4088/flux_lora/main/install.sh" -O /setup.sh && chmod +x /setup.sh && /setup.sh; fi'
 
 pip install huggingface_hub
 # Log Into Huggingface
@@ -61,17 +61,19 @@ python3 main.py
 ignore
 
 git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git
+
+
 cd stable-diffusion-webui-forge/models
-
 rm -rf text_encoder VAE Stable-diffusion controlnet loras
-
 ln -s /workspace/downloads/text_encoder text_encoder
 ln -s /workspace/downloads/vae VAE
 ln -s /workspace/downloads/unet Stable-diffusion
 ln -s /workspace/downloads/controlnet controlnet
 ln -s /workspace/downloads/lora lora
+cd ..
 
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements_versions.txt
 ./webui.sh -f --listen
+ 
