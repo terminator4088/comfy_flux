@@ -22,14 +22,14 @@ mkdir controlnet
 mkdir llm_gguf
 
 downloads=(
-    ("comfyanonymous/flux_text_encoders" "t5xxl_fp8_e4m3fn.safetensors" "text_encoder/t5xxl_fp8_e4m3fn.safetensors")
-    ("black-forest-labs/FLUX.1-dev" "text_encoder/model.safetensors" "text_encoder/clip_l.safetensors")
-    ("black-forest-labs/FLUX.1-dev" "vae/diffusion_pytorch_model.safetensors" "vae/flux_vae.safetensors")
-    ("black-forest-labs/FLUX.1-dev" "flux1-dev.safetensors" "unet/flux1-dev.safetensor")
-    ("black-forest-labs/FLUX.1-dev" "ae.safetensors" "vae/ae.safetensor")
-    ("XLabs-AI/flux-RealismLora" "lora.safetensors" "lora/realism.safetensors")
-    ("InstantX/FLUX.1-dev-Controlnet-Union" "diffusion_pytorch_model.safetensors" "controlnet/Controlnet-Union.safetensors")
-    ("cognitivecomputations/dolphin-2.9.4-llama3.1-8b-gguf" "dolphin-2.9.4-llama3.1-8b-Q6_K.gguf" "llm_gguf/dolphin-2.9.4-llama3.1-8b-Q6_K.gguf")   
+    "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn.safetensors text_encoder/t5xxl_fp8_e4m3fn.safetensors"
+    "black-forest-labs/FLUX.1-dev text_encoder/model.safetensors text_encoder/clip_l.safetensors"
+    "black-forest-labs/FLUX.1-dev vae/diffusion_pytorch_model.safetensors vae/flux_vae.safetensors"
+    "black-forest-labs/FLUX.1-dev flux1-dev.safetensors unet/flux1-dev.safetensor"
+    "black-forest-labs/FLUX.1-dev ae.safetensors vae/ae.safetensor"
+    "XLabs-AI/flux-RealismLora lora.safetensors lora/realism.safetensors"
+    "InstantX/FLUX.1-dev-Controlnet-Union diffusion_pytorch_model.safetensors controlnet/Controlnet-Union.safetensors"
+    "cognitivecomputations/dolphin-2.9.4-llama3.1-8b-gguf dolphin-2.9.4-llama3.1-8b-Q6_K.gguf llm_gguf/dolphin-2.9.4-llama3.1-8b-Q6_K.gguf"
 )
 
 download_repo_files() {
@@ -38,38 +38,35 @@ download_repo_files() {
     local new_location=$3
 
     local dest_dir="/workspace/downloads"
-    local folder=$(dirname "$new_location")
+    local folder
+    folder=$(dirname "$new_location")
 
     mkdir -p "$dest_dir/$folder"
     huggingface-cli download "$repo" "$file" --local-dir "$dest_dir" && mv "$dest_dir/$file" "$dest_dir/$new_location"
 }
 
-limit=3
-current_jobs=0
+( max_jobs=3
+declare -A cur_jobs
 
-for ((i=0; i<${#downloads[@]}; i++)); do
-    entry=("${downloads[$i]}")
-    repo_path="${entry[0]}"
-    file_name="${entry[1]}"
-    new_location="${entry[2]}"
+for entry in "${downloads[@]}"; do
+    IFS=' ' read -r repo_path file_name new_location <<< "$entry"
 
     echo "Downloading: $file_name"
-    download_repo_files "$repo_path" "$file_name" "$new_location" &
 
-    ((current_jobs+=1))
-    if ((current_jobs >= limit)); then
+    if (( ${#cur_jobs[@]} >= max_jobs )); then
         wait -n
-        ((current_jobs-=1))
+        for pid in "${!cur_jobs[@]}"; do
+            if ! kill -0 "$pid" 2>/dev/null; then
+                unset cur_jobs[$pid]
+            fi
+        end
     fi
+
+    download_repo_files "$repo_path" "$file_name" "$new_location" & cur_jobs[$!]=1
 done
+touch /workspace/download.fin ) &
+# Wait for all jobs to complete
 
-{
-    while jobs %% &>/dev/null; do
-        wait -n
-    done
-
-    touch /workspace/download.fin
-} & # Wait for downloads to finish
 
 #mkdir text_encoder
 #mkdir vae
