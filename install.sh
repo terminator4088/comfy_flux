@@ -42,7 +42,13 @@ download_repo_files() {
     folder=$(dirname "$new_location")
 
     mkdir -p "$dest_dir/$folder"
-    huggingface-cli download "$repo" "$file" --local-dir "$dest_dir" && mv "$dest_dir/$file" "$dest_dir/$new_location"
+
+    if ( $repo -ne "http"); then
+        huggingface-cli download "$repo" "$file" --local-dir "$dest_dir" && mv "$dest_dir/$file" "$dest_dir/$new_location"
+    else
+        curl -o "$dest_dir/$new_location" "$file"
+    fi
+    
 }
 
 ( max_jobs=3
