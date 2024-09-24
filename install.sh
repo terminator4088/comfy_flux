@@ -59,7 +59,7 @@ for entry in "${downloads[@]}"; do
             if ! kill -0 "$pid" 2>/dev/null; then
                 unset cur_jobs[$pid]
             fi
-        end
+        done
     fi
 
     download_repo_files "$repo_path" "$file_name" "$new_location" & cur_jobs[$!]=1
