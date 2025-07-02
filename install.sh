@@ -22,23 +22,10 @@ mkdir controlnet
 mkdir llm_gguf
 
 downloads=(
-    #"comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn.safetensors text_encoder/t5xxl_fp8_e4m3fn.safetensors"
-    #"black-forest-labs/FLUX.1-dev text_encoder/model.safetensors text_encoder/clip_l.safetensors"
-    #"black-forest-labs/FLUX.1-dev vae/diffusion_pytorch_model.safetensors vae/flux_vae.safetensors"
-    #"black-forest-labs/FLUX.1-dev flux1-dev.safetensors unet/flux1-dev.safetensor"
-    #"black-forest-labs/FLUX.1-dev ae.safetensors vae/ae.safetensor"
-    #https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/blob/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors
-
-    
     "Comfy-Org/flux1-kontext-dev_ComfyUI split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors unet/flux-kontext-fp8.safetensor"
-    #https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors
-    #https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors
-    #https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/blob/main/split_files/vae/ae.safetensors
-    
     "comfyanonymous/flux_text_encoders clip_l.safetensors unet/flux1-kontext.safetensor"
     "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoder/t5xxl_fp8_e4m3fn_scaled.safetensors"
     "Comfy-Org/Lumina_Image_2.0_Repackaged split_files/vae/ae.safetensors vae/flux-kontext-ae.safetensor"
-    
 )
 
 download_repo_files() {
