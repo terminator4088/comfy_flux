@@ -33,17 +33,13 @@ download_repo_files() {
     local file=$2
     local new_location=$3
     
-    echo => download_repo_files "$repo_path" "$file_name" "$new_location"
-    
     local dest_dir="/workspace/downloads"
     local folder
     folder=$(dirname "$new_location")
 
     mkdir -p "$dest_dir/$folder"
 
-    if ( $repo -ne "http"); then
-        echo "OK"
-        echo "huggingface-cli download \"$repo\" \"$file\" --local-dir \"$dest_dir\" && mv \"$dest_dir/$file\" \"$dest_dir/$new_location\""
+    if [ $repo != "http"]; then
         huggingface-cli download "$repo" "$file" --local-dir "$dest_dir" && mv "$dest_dir/$file" "$dest_dir/$new_location"
     else
         curl -o "$dest_dir/$new_location" "$file"
@@ -67,7 +63,6 @@ for entry in "${downloads[@]}"; do
             fi
         done
     fi
-    echo => download_repo_files "$repo_path" "$file_name" "$new_location"
     download_repo_files "$repo_path" "$file_name" "$new_location" & cur_jobs[$!]=1
 done
 touch /workspace/download.fin ) &
