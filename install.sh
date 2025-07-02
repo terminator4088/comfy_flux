@@ -68,6 +68,10 @@ done
 touch /workspace/download.fin ) &
 # Wait for all jobs to complete
 
+cat <<eee> /etc/apt/apt.conf.d/99mytimeout
+Acquire::http::Timeout "9";
+Acquire::https::Timeout "9";
+eee
 
 apt update
 apt -y install vim python3-pip curl wget git-lfs
