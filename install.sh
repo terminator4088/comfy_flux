@@ -22,10 +22,11 @@ mkdir controlnet
 mkdir llm_gguf
 
 downloads=(
-    "Comfy-Org/flux1-kontext-dev_ComfyUI split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors unet/flux-kontext-fp8.safetensor"
-    "comfyanonymous/flux_text_encoders clip_l.safetensors unet/flux1-kontext.safetensor"
-    "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoder/t5xxl_fp8_e4m3fn_scaled.safetensors"
-    "Comfy-Org/Lumina_Image_2.0_Repackaged split_files/vae/ae.safetensors vae/flux-kontext-ae.safetensor"
+    "http https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/289798/redKFm00NSFWEditorFP8.Wtdk.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22redcraftCADSUpdatedJUN29_redKKingOfHearts.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20250702/us-east-1/s3/aws4_request&X-Amz-Date=20250702T145948Z&X-Amz-SignedHeaders=host&X-Amz-Signature=871241f362ddd7804ec6903608af15000529f463e2e53aca51e44147dc59329f diffusion_models/nsfw.safetensors
+    "Comfy-Org/flux1-kontext-dev_ComfyUI split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors diffusion_models/flux-kontext-fp8.safetensors"
+    "comfyanonymous/flux_text_encoders clip_l.safetensors text_encoders/flux1-kontext.safetensors"
+    "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors"
+    "Comfy-Org/Lumina_Image_2.0_Repackaged split_files/vae/ae.safetensors vae/flux-kontext-ae.safetensors"
 )
 
 download_repo_files() {
@@ -90,9 +91,9 @@ cd ..
 
 cd /workspace/ComfyUI/models
 rm -rf text_encoder VAE Stable-diffusion controlnet loras
-ln -s /workspace/downloads/text_encoder text_encoder
-ln -s /workspace/downloads/vae VAE
-ln -s /workspace/downloads/unet Stable-diffusion
+ln -s /workspace/downloads/text_encoders text_encoders
+ln -s /workspace/downloads/vae vae
+ln -s /workspace/downloads/diffusion_models diffusion_models
 ln -s /workspace/downloads/controlnet controlnet
 ln -s /workspace/downloads/lora lora
 ln -s /workspace/downloads/llm_gguf llm_gguf
