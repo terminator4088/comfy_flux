@@ -39,7 +39,7 @@ download_repo_files() {
 
     mkdir -p "$dest_dir/$folder"
 
-    if [ "$repo" != "http"]; then
+    if [ "$repo" != "http" ]; then
         huggingface-cli download "$repo" "$file" --local-dir "$dest_dir" && mv "$dest_dir/$file" "$dest_dir/$new_location"
     else
         curl -o "$dest_dir/$new_location" "$file"
