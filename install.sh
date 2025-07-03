@@ -3,6 +3,16 @@ set -x
 
 #####	Start Docker Cmd: /bin/bash -c 'if [ ! -f /setup.sh ]; then wget "https://raw.githubusercontent.com/terminator4088/flux_lora/main/install.sh" -O /setup.sh && chmod +x /setup.sh && /setup.sh; fi'
 
+if [ -d "/workspace/ComfyUI" ]; then
+  echo "Peter: Skipping Installation"
+  cd /workspace/ComfyUI
+  source venv/bin/activate
+  python3 main.py --listen
+  echo "Peter: Now exiting"
+  exit 0
+fi
+
+
 pip install huggingface_hub
 # Log Into Huggingface
 git config --global credential.helper store
@@ -94,7 +104,8 @@ cd ComfyUI
 cd custom_nodes
 git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 git clone https://github.com/alimama-creative/FLUX-Controlnet-Inpainting.git # FLUX Inpainting
-git clone https://github.com/kijai/ComfyUI-FluxTrainer.git
+git clone https://github.com/kijai/ComfyUI-FluxTrainer.git # FluxTrainer
+git clone https://github.com/fofr/comfyui-basic-auth # Basic Auth
 cd ..
 
 
