@@ -24,31 +24,38 @@ mkdir llm_gguf
 downloads=(
     "http https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/289798/redKFm00NSFWEditorFP8.Wtdk.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22redcraftCADSUpdatedJUN29_redKKingOfHearts.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20250702/us-east-1/s3/aws4_request&X-Amz-Date=20250702T145948Z&X-Amz-SignedHeaders=host&X-Amz-Signature=871241f362ddd7804ec6903608af15000529f463e2e53aca51e44147dc59329f diffusion_models/nsfw.safetensors
     "Comfy-Org/flux1-kontext-dev_ComfyUI split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors diffusion_models/flux-kontext-fp8.safetensors"
+    "black-forest-labs/FLUX.1-Fill-dev flux1-fill-dev.safetensor diffusion_models/flux1-fill-dev.safetensors"
+    
     "comfyanonymous/flux_text_encoders clip_l.safetensors text_encoders/flux1-kontext.safetensors"
     "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors"
+    
     "Comfy-Org/Lumina_Image_2.0_Repackaged split_files/vae/ae.safetensors vae/flux-kontext-ae.safetensors"
+    
+    "alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta diffusion_pytorch_model.safetensors controlnet/flux-inpaint.safetensors"
 )
 
 download_repo_files() {
     local repo=$1
     local file=$2
     local new_location=$3
-    
+
+    local cache_dir="/workspace/cache_downloads"
     local dest_dir="/workspace/downloads"
     local folder
     folder=$(dirname "$new_location")
 
     mkdir -p "$dest_dir/$folder"
+    mkdir -p "$cache_dir/$folder"
 
     if [ "$repo" != "http" ]; then
-        huggingface-cli download "$repo" "$file" --local-dir "$dest_dir" && mv "$dest_dir/$file" "$dest_dir/$new_location"
+        huggingface-cli download "$repo" "$file" --local-dir "$cache_dir" && mv "$cache_dir/$file" "$dest_dir/$new_location"
     else
         curl -o "$dest_dir/$new_location" "$file"
     fi
     
 }
 
-( max_jobs=3
+( max_jobs=4
 declare -A cur_jobs
 
 for entry in "${downloads[@]}"; do
@@ -69,10 +76,10 @@ done
 touch /workspace/download.fin ) &
 # Wait for all jobs to complete
 
-cat <<eee> /etc/apt/apt.conf.d/99mytimeout
+cat> /etc/apt/apt.conf.d/99mytimeout <<EOF
 Acquire::http::Timeout "9";
 Acquire::https::Timeout "9";
-eee
+EOF
 
 apt update
 apt -y install vim python3-pip curl wget git-lfs
@@ -86,6 +93,8 @@ cd ComfyUI
 # Install Nodes Manager
 cd custom_nodes
 git clone https://github.com/ltdrdata/ComfyUI-Manager.git
+git clone https://github.com/alimama-creative/FLUX-Controlnet-Inpainting.git # FLUX Inpainting
+git clone https://github.com/kijai/ComfyUI-FluxTrainer.git
 cd ..
 
 
