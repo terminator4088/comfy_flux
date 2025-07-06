@@ -34,7 +34,8 @@ mkdir llm_gguf
 
 downloads=(
     "black-forest-labs/FLUX.1-Kontext-dev vae/diffusion_pytorch_model.safetensors vae/flux_vae.safetensors"
-    "XLabs-AI/flux-dev-fp8 flux-dev-fp8.safetensors diffusion_models/flux-dev-fp8.safetensors"
+    "Kijai/flux-fp8 flux1-dev-fp8-e5m2.safetensors diffusion_models/flux-dev-fp8-e5m2.safetensors"
+    #"XLabs-AI/flux-dev-fp8 flux-dev-fp8.safetensors diffusion_models/flux-dev-fp8.safetensors"
     "comfyanonymous/flux_text_encoders clip_l.safetensors text_encoders/clip_l.safetensors"
     "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors"
     "http https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/289798/redKFm00NSFWEditorFP8.Wtdk.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22redcraftCADSUpdatedJUN29_redKKingOfHearts.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20250702/us-east-1/s3/aws4_request&X-Amz-Date=20250702T145948Z&X-Amz-SignedHeaders=host&X-Amz-Signature=871241f362ddd7804ec6903608af15000529f463e2e53aca51e44147dc59329f diffusion_models/nsfw.safetensors"
