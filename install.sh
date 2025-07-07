@@ -13,7 +13,6 @@ cd /workspace
 ### Downloads
 mkdir -p /workspace/downloads
 mkdir -p /workspace/cache_downloads
-mkdir -p /workspace/ComfyUI/models
 
 downloads=(
     # Diffusion
@@ -60,6 +59,9 @@ download_repo_files() {
     # Create SymLink to ComfyUI
     local comfy_models="/workspace/ComfyUI/models"
     if [ ! -L "$comfy_models/$new_location_folder" ]; then
+      while [ ! -d "$comfy_models" ]; do
+        sleep 5
+      done
       echo "Creating SymLink for $dest_dir/$new_location_folder"
       rm -rf $comfy_models/$new_location_folder
       ln -S $dest_dir/$new_location_folder $comfy_models
