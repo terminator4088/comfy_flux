@@ -13,6 +13,7 @@ cd /workspace
 ### Downloads
 mkdir -p /workspace/downloads
 mkdir -p /workspace/cache_downloads
+mkdir -p /workspace/ComfyUI/models
 
 downloads=(
     # Diffusion
