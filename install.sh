@@ -64,7 +64,7 @@ download_repo_files() {
       done
       echo "Creating SymLink for $dest_dir/$new_location_folder"
       rm -rf $comfy_models/$new_location_folder
-      ln -S $dest_dir/$new_location_folder $comfy_models
+      ln -s $dest_dir/$new_location_folder $comfy_models
     fi
     
 }
