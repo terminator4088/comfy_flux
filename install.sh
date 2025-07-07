@@ -121,10 +121,16 @@ git clone https://github.com/alimama-creative/FLUX-Controlnet-Inpainting.git # F
 git clone https://github.com/kijai/ComfyUI-FluxTrainer.git # FluxTrainer
 git clone https://github.com/fofr/comfyui-basic-auth # Basic Auth
 git clone https://github.com/kijai/ComfyUI-KJNodes # Dependency
+git clone https://github.com/rgthree/rgthree-comfy.git # Dependency
 cd ..
 
 
 python3 -m venv venv
+
+pip install -r /workspace/ComfyUI/custom_nodes/custom_nodes/ComfyUI-KJNodes/requirements.txt
+pip install -r /workspace/ComfyUI/custom_nodes/custom_nodes/rgthree-comfy/requirements.txt
+pip install -r /workspace/ComfyUI/custom_nodes/custom_nodes/ComfyUI-FluxTrainer/requirements.txt
+
 source venv/bin/activate
 pip install -r requirements.txt
 python3 main.py --listen 
