@@ -3,16 +3,6 @@ set -x
 
 #####	Start Docker Cmd: /bin/bash -c 'if [ ! -f /setup.sh ]; then wget "https://raw.githubusercontent.com/terminator4088/flux_lora/main/install.sh" -O /setup.sh && chmod +x /setup.sh && /setup.sh; fi'
 
-if [ -d "/workspace/ComfyUI" ]; then
-  echo "Peter: Skipping Installation"
-  cd /workspace/ComfyUI
-  source venv/bin/activate
-  python3 main.py --listen
-  echo "Peter: Now exiting"
-  exit 0
-fi
-
-
 pip install huggingface_hub
 # Log Into Huggingface
 git config --global credential.helper store
@@ -21,51 +11,57 @@ huggingface-cli login --token $HFTK --add-to-git-credential
 cd /workspace
 
 ### Downloads
-mkdir downloads
-mkdir cache_downloads
-cd downloads
-
-mkdir text_encoder
-mkdir vae
-mkdir unet
-mkdir lora
-mkdir controlnet
-mkdir llm_gguf
+mkdir -p /workspace/downloads
+mkdir -p /workspace/cache_downloads
 
 downloads=(
+    # Diffusion
     "black-forest-labs/FLUX.1-dev flux1-dev.safetensors diffusion_models/flux1-dev_orig.safetensors"
-    "XLabs-AI/flux-dev-fp8 flux-dev-fp8.safetensors diffusion_models/flux-dev-fp8-xlab.safetensors"
+    #"XLabs-AI/flux-dev-fp8 flux-dev-fp8.safetensors diffusion_models/flux-dev-fp8-xlab.safetensors"
     "lllyasviel/flux1_dev flux1-dev-fp8.safetensors diffusion_models/flux1-dev-fp8-illyasviel.safetensors"
-    "Kijai/flux-fp8 flux1-dev-fp8-e5m2.safetensors diffusion_models/flux-dev-fp8-e5m2.safetensors"
-    #"XLabs-AI/flux-dev-fp8 flux-dev-fp8.safetensors diffusion_models/flux-dev-fp8.safetensors"
+    #"Kijai/flux-fp8 flux1-dev-fp8-e5m2.safetensors diffusion_models/flux-dev-fp8-e5m2.safetensors"
+    "bdsqlsz/flux1-dev2pro-single flux1-dev2pro.safetensors diffusion_models/flux-dev-2pro.safetensors"
+    # VAE
     "black-forest-labs/FLUX.1-dev ae.safetensors vae/ae.safetensors"
     "black-forest-labs/FLUX.1-dev vae/diffusion_pytorch_model.safetensors vae/vae_diffusion.safetensors"
+    # Text Encoders
     "comfyanonymous/flux_text_encoders clip_l.safetensors text_encoders/clip_l.safetensors"
     "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors"
-    "http https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/127658/acorn20is20spinning.htuc.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22acornIsSpinningFLUX_aisfV169.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20250706/us-east-1/s3/aws4_request&X-Amz-Date=20250706T191609Z&X-Amz-SignedHeaders=host&X-Amz-Signature=4e11233e9bfac9b0a8f3cbc3730f23f8e604855794dadcd14777e9d04cce10c8 diffusion_models/nsfw.safetensors"
-    "alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta diffusion_pytorch_model.safetensors controlnet/flux-inpaint.safetensors"
-    #"Comfy-Org/flux1-kontext-dev_ComfyUI split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors diffusion_models/flux-kontext-fp8.safetensors"
-    #"Comfy-Org/Lumina_Image_2.0_Repackaged split_files/vae/ae.safetensors vae/flux-kontext-ae.safetensors"
-    #"black-forest-labs/FLUX.1-Fill-dev flux1-fill-dev.safetensor diffusion_models/flux1-fill-dev.safetensors"
+    # Other
+    # "http https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/127658/acorn20is20spinning.htuc.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22acornIsSpinningFLUX_aisfV169.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20250706/us-east-1/s3/aws4_request&X-Amz-Date=20250706T191609Z&X-Amz-SignedHeaders=host&X-Amz-Signature=4e11233e9bfac9b0a8f3cbc3730f23f8e604855794dadcd14777e9d04cce10c8 diffusion_models/nsfw.safetensors"
+    # "alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta diffusion_pytorch_model.safetensors controlnet/flux-inpaint.safetensors"
 )
 
 download_repo_files() {
-    local repo=$1
-    local file=$2
+    local repo_name=$1
+    local repo_file=$2
     local new_location=$3
+    local new_location_folder=$(dirname "$new_location")
 
     local cache_dir="/workspace/cache_downloads"
     local dest_dir="/workspace/downloads"
-    local folder
-    folder=$(dirname "$new_location")
 
-    mkdir -p "$dest_dir/$folder"
-    mkdir -p "$cache_dir/$folder"
+    
+    # Break if File already exists
+    if [ -e "$dest_dir/$new_location" ]; then
+      echo "File Already Downloaded: $new_location"
+      return 0
+    fi
+
+    mkdir -p "$dest_dir/$new_location_folder"
 
     if [ "$repo" != "http" ]; then
-        huggingface-cli download "$repo" "$file" --local-dir "$cache_dir" && mv "$cache_dir/$file" "$dest_dir/$new_location"
+        huggingface-cli download "$repo_name" "$repo_file" --local-dir "$cache_dir" && mv "$cache_dir/$repo_file" "$dest_dir/$new_location"
     else
-        curl -o "$dest_dir/$new_location" "$file"
+        curl -o "$dest_dir/$new_location" "$repo_file"
+    fi
+
+    # Create SymLink to ComfyUI
+    local comfy_models="/workspace/ComfyUI/models"
+    if [ ! -L "$comfy_models/$new_location_folder" ]; then
+      echo "Creating SymLink for $dest_dir/$new_location_folder"
+      rm -rf $comfy_models/$new_location_folder
+      ln -S $dest_dir/$new_location_folder $comfy_models
     fi
     
 }
@@ -91,6 +87,16 @@ done
 touch /workspace/download.fin ) &
 # Wait for all jobs to complete
 
+
+if [ -d "/workspace/ComfyUI" ]; then
+  echo "Skipping Installation; Start ComfyUI"
+  cd /workspace/ComfyUI
+  source venv/bin/activate
+  python3 main.py --listen
+  echo "Now exiting ComfyUI"
+  exit 0
+fi
+
 cat > /etc/apt/apt.conf.d/99mytimeout <<EOF
 Acquire::http::Timeout "9";
 Acquire::https::Timeout "9";
@@ -115,17 +121,6 @@ git clone https://github.com/kijai/ComfyUI-KJNodes # Dependency
 cd ..
 
 
-cd /workspace/ComfyUI/models
-rm -rf text_encoder VAE Stable-diffusion controlnet loras
-ln -s /workspace/downloads/text_encoders text_encoders
-ln -s /workspace/downloads/vae vae
-ln -s /workspace/downloads/diffusion_models diffusion_models
-ln -s /workspace/downloads/unet unet
-ln -s /workspace/downloads/controlnet controlnet
-ln -s /workspace/downloads/lora lora
-ln -s /workspace/downloads/llm_gguf llm_gguf
-
-cd ..
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
