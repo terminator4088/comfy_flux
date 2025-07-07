@@ -16,9 +16,9 @@ mkdir -p /workspace/cache_downloads
 
 downloads=(
     # Diffusion
-    #"black-forest-labs/FLUX.1-dev flux1-dev.safetensors diffusion_models/flux1-dev_orig.safetensors"
+    "black-forest-labs/FLUX.1-dev flux1-dev.safetensors diffusion_models/flux1-dev_orig.safetensors"
     #"lllyasviel/flux1_dev flux1-dev-fp8.safetensors diffusion_models/flux1-dev-fp8-illyasviel.safetensors"
-    #"bdsqlsz/flux1-dev2pro-single flux1-dev2pro.safetensors diffusion_models/flux-dev-2pro.safetensors"
+    "bdsqlsz/flux1-dev2pro-single flux1-dev2pro.safetensors diffusion_models/flux-dev-2pro.safetensors"
     #"XLabs-AI/flux-dev-fp8 flux-dev-fp8.safetensors diffusion_models/flux-dev-fp8-xlab.safetensors"
     #"Kijai/flux-fp8 flux1-dev-fp8-e5m2.safetensors diffusion_models/flux-dev-fp8-e5m2.safetensors"
     # VAE
