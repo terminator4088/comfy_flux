@@ -16,17 +16,17 @@ mkdir -p /workspace/cache_downloads
 
 downloads=(
     # Diffusion
-    "black-forest-labs/FLUX.1-dev flux1-dev.safetensors diffusion_models/flux1-dev_orig.safetensors"
+##"black-forest-labs/FLUX.1-dev flux1-dev.safetensors diffusion_models/flux1-dev_orig.safetensors"
     #"lllyasviel/flux1_dev flux1-dev-fp8.safetensors diffusion_models/flux1-dev-fp8-illyasviel.safetensors"
-    "bdsqlsz/flux1-dev2pro-single flux1-dev2pro.safetensors diffusion_models/flux-dev-2pro.safetensors"
+#"bdsqlsz/flux1-dev2pro-single flux1-dev2pro.safetensors diffusion_models/flux-dev-2pro.safetensors"
     #"XLabs-AI/flux-dev-fp8 flux-dev-fp8.safetensors diffusion_models/flux-dev-fp8-xlab.safetensors"
     #"Kijai/flux-fp8 flux1-dev-fp8-e5m2.safetensors diffusion_models/flux-dev-fp8-e5m2.safetensors"
     # VAE
-    "black-forest-labs/FLUX.1-dev ae.safetensors vae/ae.safetensors"
-    "black-forest-labs/FLUX.1-dev vae/diffusion_pytorch_model.safetensors vae/vae_diffusion.safetensors"
+#"black-forest-labs/FLUX.1-dev ae.safetensors vae/ae.safetensors"
+#"black-forest-labs/FLUX.1-dev vae/diffusion_pytorch_model.safetensors vae/vae_diffusion.safetensors"
     # Text Encoders
-    "comfyanonymous/flux_text_encoders clip_l.safetensors text_encoders/clip_l.safetensors"
-    "comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors"
+#"comfyanonymous/flux_text_encoders clip_l.safetensors text_encoders/clip_l.safetensors"
+#"comfyanonymous/flux_text_encoders t5xxl_fp8_e4m3fn_scaled.safetensors text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors"
     # Other
     # "http https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/127658/acorn20is20spinning.htuc.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22acornIsSpinningFLUX_aisfV169.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20250706/us-east-1/s3/aws4_request&X-Amz-Date=20250706T191609Z&X-Amz-SignedHeaders=host&X-Amz-Signature=4e11233e9bfac9b0a8f3cbc3730f23f8e604855794dadcd14777e9d04cce10c8 diffusion_models/nsfw.safetensors"
     # "alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta diffusion_pytorch_model.safetensors controlnet/flux-inpaint.safetensors"
