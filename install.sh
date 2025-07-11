@@ -95,7 +95,6 @@ if [ -d "/workspace/ComfyUI" ]; then
   echo "Skipping Installation; Start ComfyUI2"
   cd /workspace/ComfyUI
   source venv/bin/activate
-  pip install -r requirements.txt
   python3 main.py --listen
   echo "Now exiting ComfyUI"
   exit 0
